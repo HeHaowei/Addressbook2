@@ -1,0 +1,21 @@
+language: java
+matrix:
+  include:
+    - jdk: oraclejdk9
+
+script:
+  - (cd test && ./runtests.sh) # I/O tests
+  - (./gradlew clean test) # JUnit tests
+  - ./gradlew asciidoctor # Documentation
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ./config/travis/deploy_github_pages.sh
+  on:
+    branch: master
+
+addons:
+  apt:
+    packages:
+      - oracle-java9-installer
